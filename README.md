@@ -2,6 +2,16 @@
 
 一个基于 Fluent Design 的现代化安装工具，提供美观的用户界面和便捷的操作体验。
 
+截图
+
+![](https://pub-141831e61e69445289222976a15b6fb3.r2.dev/Image_to_url_V2/-----2026-03-08-205522-imagetourl.cloud-1772974532411-ol1cg2.png)
+
+![](https://pub-141831e61e69445289222976a15b6fb3.r2.dev/Image_to_url_V2/-----2026-03-08-205522-imagetourl.cloud-1772974601928-3higep.png)
+
+![https://pub-141831e61e69445289222976a15b6fb3.r2.dev/Image_to_url_V2/-----2026-03-08-205522-imagetourl.cloud-1772974647358-0kx1je.png](https://pub-141831e61e69445289222976a15b6fb3.r2.dev/Image_to_url_V2/-----2026-03-08-205522-imagetourl.cloud-1772974647358-0kx1je.png)
+
+
+
 [English Version](./README_EN.md)
 
 ## 功能特点
@@ -44,16 +54,19 @@
 ### 常见问题
 
 #### Python 未找到
+
 - 请下载并安装 Python 3.8 或更高版本
 - 下载地址：https://www.python.org/downloads/
 - 安装时请勾选「Add Python to PATH」选项
 
 #### 安装失败
+
 - 检查网络连接是否正常
 - 尝试使用「中国镜像」安装选项
 - 手动安装依赖：`pip install -i https://pypi.tuna.tsinghua.edu.cn/simple PyQt6 PyQt6-Fluent-Widgets qasync`
 
 #### 程序启动失败
+
 - 确保所有依赖已正确安装
 - 检查 Python 环境是否正常
 - 尝试使用「清理冲突包」功能后重新安装

@@ -1260,7 +1260,7 @@ class SettingsPage(ScrollArea):
 • 已入库游戏管理
 • 主题自定义
 
-项目地址: https://github.com/pvzcxw/Cai-install-Web-GUI"""
+项目地址: https://github.com/zhouchentao666/Cai-install-Fluent-GUI"""
         
         dialog = MessageBox("关于", about_text, self.window())
         dialog.exec()
@@ -1270,11 +1270,12 @@ class SettingsPage(ScrollArea):
         thanks_text = """特别鸣谢
 
 开发者:
-• pvzcxw - 原始项目作者
+• zhouchentao666 - 制作人员
 
 开源项目:
 • PyQt6 - Qt6 Python 绑定
 • PyQt-Fluent-Widgets - Fluent Design 组件库
+• Cai-install-Web-GUI - 原始项目作者
 • httpx - 异步 HTTP 客户端
 
 清单源提供:

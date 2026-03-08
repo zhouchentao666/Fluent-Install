@@ -2,6 +2,16 @@
 
 A modern installation tool based on Fluent Design, providing a beautiful user interface and convenient operation experience.
 
+Pictures
+
+截图
+
+![](https://pub-141831e61e69445289222976a15b6fb3.r2.dev/Image_to_url_V2/-----2026-03-08-205522-imagetourl.cloud-1772974532411-ol1cg2.png)
+
+![](https://pub-141831e61e69445289222976a15b6fb3.r2.dev/Image_to_url_V2/-----2026-03-08-205522-imagetourl.cloud-1772974601928-3higep.png)
+
+![https//pub141831e61e69445289222976a15b6fb3r2dev/ImagetourlV2/20260308205522imagetourlcloud17729746473580kx1jepng](https://pub-141831e61e69445289222976a15b6fb3.r2.dev/Image_to_url_V2/-----2026-03-08-205522-imagetourl.cloud-1772974647358-0kx1je.png)
+
 ## Features
 
 - ✨ Modern Fluent Design interface
@@ -42,16 +52,19 @@ After installation, select the "Run Program" option in the same script to start 
 ### Common Issues
 
 #### Python Not Found
+
 - Please download and install Python 3.8 or higher
 - Download address: https://www.python.org/downloads/
 - Please check the "Add Python to PATH" option during installation
 
 #### Installation Failed
+
 - Check if the network connection is normal
 - Try using the "China Mirror" installation option
 - Manually install dependencies: `pip install -i https://pypi.tuna.tsinghua.edu.cn/simple PyQt6 PyQt6-Fluent-Widgets qasync`
 
 #### Program Startup Failed
+
 - Ensure all dependencies are correctly installed
 - Check if the Python environment is normal
 - Try using the "Cleanup Conflict Packages" function and then reinstall
