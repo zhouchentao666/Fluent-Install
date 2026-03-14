@@ -154,7 +154,7 @@ TEXTS = {
         "red": "红色 (#e81123)",
         "pink": "粉色 (#e3008c)",
         "tip_source_fail": "提示: 如果某个源失败，请尝试其他源",
-        "auto_search_github": "自动搜索GitHub (推荐)",
+        "auto_search_github": "自动搜索GitHub",
         "swa_v2": "SWA V2",
         "cysaw": "Cysaw",
         "furcate": "Furcate",
@@ -173,10 +173,12 @@ TEXTS = {
         "recognition_success": "识别成功",
         "game_not_found": "未找到匹配的游戏",
         "check_game_name": "请检查游戏名称或尝试使用 AppID",
-        "game_found": "找到游戏",
         "search_failed": "搜索失败",
+        "game_selected": "游戏已选择",
         "add_success": "入库成功",
         "add_success_content": "AppID {0} 已成功入库，重启 Steam 后生效",
+        "adding_game": "正在入库游戏...",
+        "please_wait_adding": "请稍候，正在处理入库操作",
         "process_failed": "处理失败",
         "check_logs": "请查看日志",
         "check_details": "处理失败，请查看详细信息或尝试其他清单源",
@@ -290,10 +292,11 @@ TEXTS = {
         "recognition_success": "Recognition Success",
         "game_not_found": "Game not found",
         "check_game_name": "Please check the game name or try using AppID",
-        "game_found": "Game Found",
         "search_failed": "Search Failed",
         "add_success": "Add Success",
         "add_success_content": "AppID {0} has been successfully added, restart Steam to take effect",
+        "adding_game": "Adding game to library...",
+        "please_wait_adding": "Please wait, processing add operation",
         "process_failed": "Process Failed",
         "check_logs": "Please check logs",
         "check_details": "Process failed, please check details or try other sources",
@@ -356,7 +359,11 @@ class GameCard(CardWidget):
         self.coverLabel.setStyleSheet("border-radius: 4px; background: #2a2a2a;")
         
         # 游戏标题
-        self.titleLabel = BodyLabel(game_name if game_name != "加载中..." else f"AppID: {appid}", self)
+        # 如果游戏名称为空或显示为"名称未找到"等，显示AppID
+        display_name = game_name
+        if not game_name or game_name == '名称未找到' or game_name == '获取失败' or game_name == tr('unknown_game'):
+            display_name = f"AppID: {appid}"
+        self.titleLabel = BodyLabel(display_name, self)
         self.titleLabel.setWordWrap(False)
         
         # AppID 和来源
@@ -477,9 +484,17 @@ class HomePage(ScrollArea):
         self.title = SubtitleLabel(tr("installed_games"), self)
         self.stats_label = CaptionLabel(tr("loading"), self)
         self.stats_label.setTextColor("#606060", "#d2d2d2")
+        
+        # 添加刷新按钮
+        self.refresh_button = TransparentToolButton(FluentIcon.SYNC, self)
+        self.refresh_button.setFixedSize(32, 32)
+        self.refresh_button.clicked.connect(self.refresh_games)
+        self.refresh_button.setToolTip("刷新游戏列表")
+        
         header_layout.addWidget(self.title)
         header_layout.addStretch(1)
         header_layout.addWidget(self.stats_label)
+        header_layout.addWidget(self.refresh_button)
         self.mainLayout.addLayout(header_layout)
         
         # 搜索框
@@ -532,6 +547,27 @@ class HomePage(ScrollArea):
         self.worker.error.connect(self.on_load_error)
         self.worker.start()
     
+    def refresh_games(self):
+        """刷新游戏列表"""
+        # 显示刷新动画
+        self.refresh_button.setEnabled(False)
+        if hasattr(self.refresh_button, 'setSpinning'):
+            self.refresh_button.setSpinning(True)
+        
+        # 重新加载游戏列表
+        self.load_games()
+        
+        # 恢复刷新按钮状态（在加载完成后）
+        if self.worker:
+            self.worker.finished.connect(lambda: self.on_refresh_complete())
+            self.worker.error.connect(lambda: self.on_refresh_complete())
+    
+    def on_refresh_complete(self):
+        """刷新完成"""
+        self.refresh_button.setEnabled(True)
+        if hasattr(self.refresh_button, 'setSpinning'):
+            self.refresh_button.setSpinning(False)
+    
     @pyqtSlot(object)
     def on_games_loaded(self, files_data):
         """游戏加载完成"""
@@ -575,7 +611,11 @@ class HomePage(ScrollArea):
         # 添加卡片
         for source_type, game in games_data:
             appid = game.get('appid', 'N/A')
-            game_name = game.get('game_name', tr('unknown_game'))
+            game_name = game.get('game_name', '')
+            
+            # 如果游戏名称为空或显示为"名称未找到"，显示更友好的提示
+            if not game_name or game_name == '名称未找到' or game_name == '获取失败':
+                game_name = f"AppID {appid}"
             
             card = GameCard(appid, game_name, source_type, self)
             self.card_layout.addWidget(card)
@@ -685,6 +725,88 @@ class HomePage(ScrollArea):
         self.stats_label.setText(tr("load_failed", error))
 
 
+class SearchResultCard(CardWidget):
+    """搜索结果卡片组件"""
+    
+    def __init__(self, appid, game_name, parent=None):
+        super().__init__(parent)
+        self.appid = appid
+        self.game_name = game_name
+        
+        # 网络管理器
+        self.network_manager = QNetworkAccessManager(self)
+        self.network_manager.finished.connect(self.on_cover_loaded)
+        
+        # 创建布局
+        self.hBoxLayout = QHBoxLayout(self)
+        self.vBoxLayout = QVBoxLayout()
+        
+        # 游戏封面
+        self.coverLabel = QLabel(self)
+        self.coverLabel.setFixedSize(120, 56)
+        self.coverLabel.setScaledContents(True)
+        self.coverLabel.setStyleSheet("border-radius: 4px; background: #2a2a2a;")
+        
+        # 游戏标题
+        self.titleLabel = BodyLabel(game_name, self)
+        self.titleLabel.setWordWrap(False)
+        
+        # AppID
+        self.infoLabel = CaptionLabel(f"AppID: {appid}", self)
+        self.infoLabel.setTextColor("#606060", "#d2d2d2")
+        
+        # 入库按钮
+        self.selectButton = PrimaryPushButton("入库", self)
+        self.selectButton.setFixedSize(80, 32)
+        self.selectButton.clicked.connect(self.on_select_clicked)
+        
+        # 设置布局
+        self.setFixedHeight(80)
+        self.hBoxLayout.setContentsMargins(15, 12, 15, 12)
+        self.hBoxLayout.setSpacing(15)
+        
+        self.hBoxLayout.addWidget(self.coverLabel)
+        
+        self.vBoxLayout.setContentsMargins(0, 0, 0, 0)
+        self.vBoxLayout.setSpacing(4)
+        self.vBoxLayout.addWidget(self.titleLabel, 0, Qt.AlignmentFlag.AlignVCenter)
+        self.vBoxLayout.addWidget(self.infoLabel, 0, Qt.AlignmentFlag.AlignVCenter)
+        self.vBoxLayout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
+        
+        self.hBoxLayout.addLayout(self.vBoxLayout)
+        self.hBoxLayout.addStretch(1)
+        self.hBoxLayout.addWidget(self.selectButton, 0, Qt.AlignmentFlag.AlignRight)
+        
+        # 加载封面
+        self.load_cover()
+    
+    def load_cover(self):
+        """加载游戏封面"""
+        cover_url = f"https://cdn.akamai.steamstatic.com/steam/apps/{self.appid}/header.jpg"
+        request = QNetworkRequest(QUrl(cover_url))
+        self.network_manager.get(request)
+    
+    @pyqtSlot(QNetworkReply)
+    def on_cover_loaded(self, reply):
+        """封面加载完成"""
+        if reply.error() == QNetworkReply.NetworkError.NoError:
+            data = reply.readAll()
+            pixmap = QPixmap()
+            if pixmap.loadFromData(data):
+                self.coverLabel.setPixmap(pixmap)
+        reply.deleteLater()
+    
+    def on_select_clicked(self):
+        """入库按钮点击 - 直接入库"""
+        if self.parent():
+            parent = self.parent()
+            while parent and not isinstance(parent, SearchPage):
+                parent = parent.parent()
+            if parent:
+                # 直接调用入库，传入当前游戏信息
+                parent.unlock_game_direct(self.appid, self.game_name)
+
+
 class SearchPage(ScrollArea):
     """搜索和入库页面"""
     
@@ -706,108 +828,35 @@ class SearchPage(ScrollArea):
         title = SubtitleLabel(tr("search_and_add"), self)
         layout.addWidget(title)
         
-        # 搜索卡片
-        search_card = CardWidget(self)
-        search_layout = QVBoxLayout(search_card)
-        search_layout.setContentsMargins(20, 20, 20, 20)
-        search_layout.setSpacing(15)
-        
-        # 搜索输入框和按钮
-        input_layout = QHBoxLayout()
+        # 搜索输入框（无容器）
         self.search_input = SearchLineEdit(self)
         self.search_input.setPlaceholderText(tr("game_name_or_appid"))
         self.search_input.setFixedHeight(40)
         self.search_input.searchSignal.connect(self.on_search)
-        input_layout.addWidget(self.search_input)
+        self.search_input.textChanged.connect(self.on_search_text_changed)
+        layout.addWidget(self.search_input)
         
-        self.search_button = PrimaryPushButton(tr("search_button"), self)
-        self.search_button.setFixedSize(100, 40)
-        self.search_button.clicked.connect(self.on_search)
-        input_layout.addWidget(self.search_button)
-        
-        search_layout.addLayout(input_layout)
-        layout.addWidget(search_card)
-        
-        # 选项卡片
-        options_card = CardWidget(self)
-        options_layout = QVBoxLayout(options_card)
-        options_layout.setContentsMargins(20, 20, 20, 20)
-        options_layout.setSpacing(15)
-        
-        options_title = BodyLabel(tr("add_options"), self)
-        options_layout.addWidget(options_title)
+        # 搜索选项（放在搜索框旁边）
+        options_layout = QHBoxLayout()
         
         # 选项
-        check_layout = QHBoxLayout()
         self.add_dlc_check = CheckBox(tr("add_all_dlc"), self)
         self.add_dlc_check.setChecked(False)
-        check_layout.addWidget(self.add_dlc_check)
+        options_layout.addWidget(self.add_dlc_check)
         
         self.patch_key_check = CheckBox(tr("patch_depot_key"), self)
         self.patch_key_check.setChecked(False)
-        check_layout.addWidget(self.patch_key_check)
+        options_layout.addWidget(self.patch_key_check)
         
-        check_layout.addStretch(1)
-        options_layout.addLayout(check_layout)
+        options_layout.addStretch(1)
+        layout.addLayout(options_layout)
         
-        # 清单源选择
-        source_layout = QHBoxLayout()
-        source_layout.addWidget(BodyLabel(tr("manifest_source"), self))
-        self.source_combo = ComboBox(self)
-        self.source_combo.addItems([
-            tr("auto_search_github"),
-            tr("swa_v2"),
-            tr("cysaw"),
-            tr("furcate"),
-            tr("walftech"),
-            tr("steamdatabase"),
-            tr("steamautocracks_v2"),
-            tr("sudama"),
-            tr("buqiuren"),
-            tr("github_auiowu"),
-            tr("github_sac")
-        ])
-        self.source_combo.setCurrentIndex(0)
-        self.source_combo.setFixedWidth(240)
-        source_layout.addWidget(self.source_combo)
+        # 搜索结果卡片直接添加到主布局（删除所有容器）
+        self.results_layout = QVBoxLayout()
+        self.results_layout.setContentsMargins(0, 0, 0, 0)
+        self.results_layout.setSpacing(10)
         
-        # 添加提示
-        source_hint = CaptionLabel(tr("tip_source_fail"), self)
-        source_hint.setTextColor("#606060", "#d2d2d2")
-        source_layout.addWidget(source_hint)
-        
-        source_layout.addStretch(1)
-        options_layout.addLayout(source_layout)
-        
-        layout.addWidget(options_card)
-        
-        # 结果和操作卡片
-        result_card = CardWidget(self)
-        result_layout = QVBoxLayout(result_card)
-        result_layout.setContentsMargins(20, 20, 20, 20)
-        result_layout.setSpacing(15)
-        
-        self.result_label = BodyLabel(tr("game_name_or_appid"), self)
-        self.result_label.setWordWrap(True)
-        result_layout.addWidget(self.result_label)
-        
-        # 入库按钮
-        action_layout = QHBoxLayout()
-        self.unlock_button = PrimaryPushButton(tr("add_game"), self)
-        self.unlock_button.setFixedSize(120, 40)
-        self.unlock_button.clicked.connect(self.on_unlock_game)
-        self.unlock_button.setEnabled(False)
-        action_layout.addWidget(self.unlock_button)
-        
-        self.progress_ring = ProgressRing(self)
-        self.progress_ring.setFixedSize(24, 24)
-        self.progress_ring.hide()
-        action_layout.addWidget(self.progress_ring)
-        
-        action_layout.addStretch(1)
-        result_layout.addLayout(action_layout)
-        
-        layout.addWidget(result_card)
+        layout.addLayout(self.results_layout)
         layout.addStretch(1)
         
         # 设置透明背景
@@ -815,27 +864,42 @@ class SearchPage(ScrollArea):
         container.setStyleSheet("QWidget#searchContainer { background: transparent; }")
         
         # 状态变量
-        self.current_appid = None
         self.search_worker = None
         self.unlock_worker = None
+        self.result_cards = []
+        self.search_timer = None
+    
+    def on_search_text_changed(self):
+        """搜索文本变化时自动搜索"""
+        # 延迟搜索，避免频繁搜索
+        if self.search_timer:
+            self.search_timer.stop()
+        else:
+            from PyQt6.QtCore import QTimer
+            self.search_timer = QTimer()
+            self.search_timer.timeout.connect(self.on_search)
+            self.search_timer.setSingleShot(True)
+        
+        # 延迟500ms搜索
+        self.search_timer.start(500)
     
     def on_search(self):
         """搜索游戏"""
         query = self.search_input.text().strip()
         if not query:
-            InfoBar.warning(
-                title=tr("tip"),
-                content=tr("game_name_or_appid"),
-                parent=self,
-                position=InfoBarPosition.TOP
-            )
+            # 清空结果
+            for card in self.result_cards:
+                card.deleteLater()
+            self.result_cards.clear()
             return
         
-        # 显示进度
-        self.progress_ring.show()
-        self.search_button.setEnabled(False)
-        self.unlock_button.setEnabled(False)
-        self.result_label.setText(tr("loading"))
+        # 清空之前的结果卡片
+        for card in self.result_cards:
+            card.deleteLater()
+        self.result_cards.clear()
+        
+        # 显示进度（简化版本，无进度环）
+        # 这里可以添加简单的加载提示
         
         async def _search():
             async with CaiBackend() as backend:
@@ -856,29 +920,20 @@ class SearchPage(ScrollArea):
         self.search_worker.error.connect(self.on_search_error)
         self.search_worker.start()
     
+
+    
     @pyqtSlot(object)
     def on_search_complete(self, result):
         """搜索完成"""
-        self.progress_ring.hide()
-        self.search_button.setEnabled(True)
+        # 无进度环，直接处理结果
         
         if result['type'] == 'appid':
-            # 直接是 AppID
-            self.current_appid = result['appid']
-            self.unlock_button.setEnabled(True)
-            self.result_label.setText(f"✓ {tr('recognition_success')}\nAppID: {self.current_appid}\n\n点击「入库游戏」按钮继续")
-            
-            InfoBar.success(
-                title=tr("recognition_success"),
-                content=f"AppID: {self.current_appid}",
-                parent=self,
-                position=InfoBarPosition.TOP
-            )
+            # 直接是 AppID，自动开始入库
+            self.unlock_game_direct(result['appid'], None)
         else:
             # 搜索结果
             results = result['results']
             if not results:
-                self.result_label.setText(f"✗ {tr('game_not_found')}\n{tr('check_game_name')}")
                 InfoBar.warning(
                     title=tr("game_not_found"),
                     content=tr("game_not_found"),
@@ -887,31 +942,15 @@ class SearchPage(ScrollArea):
                 )
                 return
             
-            # 显示第一个结果
-            first = results[0]
-            self.current_appid = first['appid']
-            self.unlock_button.setEnabled(True)
-            
-            result_text = f"✓ {tr('game_found')}\n\n游戏名称: {first['name']}\nAppID: {first['appid']}\n\n点击「入库游戏」按钮继续"
-            if len(results) > 1:
-                result_text += f"\n\n{tr('tip')}: 找到 {len(results)} 个结果，已选择第一个"
-            
-            self.result_label.setText(result_text)
-            
-            InfoBar.success(
-                title=tr("game_found"),
-                content=f"{first['name']} (AppID: {first['appid']})",
-                parent=self,
-                position=InfoBarPosition.TOP,
-                duration=3000
-            )
+            # 创建结果卡片
+            for game in results:
+                card = SearchResultCard(game['appid'], game['name'], self)
+                self.results_layout.addWidget(card)
+                self.result_cards.append(card)
     
     @pyqtSlot(str)
     def on_search_error(self, error):
         """搜索失败"""
-        self.progress_ring.hide()
-        self.search_button.setEnabled(True)
-        self.result_label.setText(f"✗ {tr('search_failed')}\n{error}")
         InfoBar.error(
             title=tr("search_failed"),
             content=error,
@@ -919,36 +958,36 @@ class SearchPage(ScrollArea):
             position=InfoBarPosition.TOP
         )
     
-    def on_unlock_game(self):
-        """入库游戏"""
-        if not self.current_appid:
+    def notify_home_refresh(self):
+        """通知主页刷新游戏列表"""
+        # 获取主窗口
+        main_window = self.window()
+        if hasattr(main_window, 'home_page'):
+            # 延迟刷新，确保入库操作完全完成
+            from PyQt6.QtCore import QTimer
+            QTimer.singleShot(1000, main_window.home_page.refresh_games)
+    
+    def unlock_game_direct(self, appid, game_name):
+        """直接入库游戏（新的直接入库方法）"""
+        if not appid:
             return
         
         # 获取选项
         add_all_dlc = self.add_dlc_check.isChecked()
         patch_depot_key = self.patch_key_check.isChecked()
         
-        # 获取清单源
-        source_map = {
-            "自动搜索GitHub (推荐)": "search",
-            "SWA V2": "printedwaste",
-            "Cysaw": "cysaw",
-            "Furcate": "furcate",
-            "Walftech": "walftech",
-            "steamdatabase": "steamdatabase",
-            "SteamAutoCracks V2 (仅密钥)": "steamautocracks_v2",
-            "Sudama库 (仅密钥)": "sudama",
-            "清单不求人库 (仅清单)": "buqiuren",
-            "GitHub (Auiowu)": "Auiowu/ManifestAutoUpdate",
-            "GitHub (SAC)": "SteamAutoCracks/ManifestHub"
-        }
-        tool_type = source_map.get(self.source_combo.currentText(), "search")
+        # 默认使用SteamAutoCracks V2
+        tool_type = "steamautocracks_v2"
         
-        # 显示进度
-        self.progress_ring.show()
-        self.unlock_button.setEnabled(False)
-        self.search_button.setEnabled(False)
-        self.result_label.setText(f"{tr('loading')} AppID {self.current_appid}...\n{tr('please_wait')}")
+        # 显示入库提示
+        display_name = game_name or f"AppID {appid}"
+        InfoBar.info(
+            title=tr("adding_game"),
+            content=f"{display_name} - {tr('please_wait_adding')}",
+            parent=self,
+            position=InfoBarPosition.TOP,
+            duration=2000  # 2秒后自动消失
+        )
         
         async def _unlock():
             async with CaiBackend() as backend:
@@ -958,26 +997,19 @@ class SearchPage(ScrollArea):
                 
                 await backend.checkcn()
                 
-                # 处理清单
-                if tool_type == "search":
-                    results = await backend.search_all_repos_for_appid(self.current_appid)
-                    if not results:
-                        raise Exception(f"在所有 GitHub 仓库中都未找到 AppID {self.current_appid} 的清单")
-                    # 使用第一个源
-                    tool_type_actual = list(results.keys())[0]
-                else:
-                    tool_type_actual = tool_type
+                # 处理清单 - 直接使用SteamAutoCracks V2
+                tool_type_actual = "steamautocracks_v2"
                 
                 # 判断是 ZIP 源还是 GitHub 源
                 zip_sources = ["printedwaste", "cysaw", "furcate", "walftech", "steamdatabase", "steamautocracks_v2", "sudama", "buqiuren"]
                 if tool_type_actual in zip_sources:
                     success = await backend.process_zip_source(
-                        self.current_appid, tool_type_actual, unlocker_type,
+                        appid, tool_type_actual, unlocker_type,
                         False, add_all_dlc, patch_depot_key
                     )
                 else:
                     success = await backend.process_github_manifest(
-                        self.current_appid, tool_type_actual, unlocker_type,
+                        appid, tool_type_actual, unlocker_type,
                         False, add_all_dlc, patch_depot_key
                     )
                 
@@ -991,21 +1023,17 @@ class SearchPage(ScrollArea):
     @pyqtSlot(object)
     def on_unlock_complete(self, success):
         """入库完成"""
-        self.progress_ring.hide()
-        self.unlock_button.setEnabled(True)
-        self.search_button.setEnabled(True)
-        
         if success:
-            self.result_label.setText(f"✓ {tr('add_success')}!\n\nAppID {self.current_appid} {tr('add_success').lower()}\n请重启 Steam 使更改生效")
             InfoBar.success(
                 title=tr("add_success"),
-                content=tr("add_success_content").format(self.current_appid),
+                content=tr("add_success_content").format(self.current_appid if hasattr(self, 'current_appid') else '游戏'),
                 parent=self,
                 position=InfoBarPosition.TOP,
                 duration=3000
             )
+            # 通知主页刷新游戏列表
+            self.notify_home_refresh()
         else:
-            self.result_label.setText(f"✗ {tr('delete_failed')}\n{tr('process_failed')}，{tr('check_logs')}")
             InfoBar.error(
                 title=tr("delete_failed"),
                 content=tr("process_failed") + "，" + tr("check_logs"),
@@ -1016,21 +1044,16 @@ class SearchPage(ScrollArea):
     @pyqtSlot(str)
     def on_unlock_error(self, error):
         """入库失败"""
-        self.progress_ring.hide()
-        self.unlock_button.setEnabled(True)
-        self.search_button.setEnabled(True)
-        
         # 友好的错误提示
         if "Server disconnected" in error or "RemoteProtocolError" in error:
             error_msg = "网络连接失败，服务器断开连接\n\n可能的原因：\n1. 清单源服务器不稳定\n2. 网络连接问题\n\n建议：\n- 尝试切换其他清单源\n- 检查网络连接\n- 稍后重试"
         elif "未找到" in error or "not found" in error.lower():
-            error_msg = f"未找到 AppID {self.current_appid} 的清单\n\n建议：\n- 尝试切换其他清单源\n- 使用「自动搜索GitHub」选项"
+            current_appid = getattr(self, 'current_appid', '当前游戏')
+            error_msg = f"未找到 AppID {current_appid} 的清单\n\n建议：\n- 尝试切换其他清单源\n- 使用「自动搜索GitHub」选项"
         elif "GitHub API" in error:
             error_msg = "GitHub API 请求次数已用尽\n\n建议：\n- 在设置中配置 GitHub Token\n- 使用其他清单源"
         else:
             error_msg = error
-        
-        self.result_label.setText(f"✗ {tr('delete_failed')}\n\n{error_msg}")
         
         InfoBar.error(
             title=tr("delete_failed"),
