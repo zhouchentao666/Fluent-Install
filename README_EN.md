@@ -256,6 +256,12 @@ See [`requirements.txt`](requirements.txt) file for details
 
 ## 🤝 Contribution Guidelines
 
+### Donation Author:
+
+![](https://pub-141831e61e69445289222976a15b6fb3.r2.dev/Image_to_url_V2/6188237576876003069_121-imagetourl.cloud-1774005513945-35nyye.jpg)
+
+![](https://pub-141831e61e69445289222976a15b6fb3.r2.dev/Image_to_url_V2/6188237576876003068_121-imagetourl.cloud-1774005511802-siuw87.jpg)
+
 We welcome all forms of contribution, including code, documentation, translation, testing, and more!
 
 ### 🌟 How to Contribute
