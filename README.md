@@ -1,4 +1,4 @@
-# Cai Install - Fluent Design
+# Fluent Install
 
 [English Version](./README_EN.md)
 
