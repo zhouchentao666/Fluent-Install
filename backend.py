@@ -1915,9 +1915,6 @@ class CaiBackend:
         except Exception as e:
             self.log.error(f'处理 Sudama 库清单时出错: {self.stack_error(e)}')
             return False
-            
-    
-
 
     async def _process_mhub_manifest(self, app_id: str, unlocker_type: str, use_st_auto_update: bool, add_all_dlc: bool, patch_depot_key: bool) -> bool:
         """处理 MHub 清单下载（steamhub.156354.xyz）"""
@@ -3057,7 +3054,7 @@ class CaiBackend:
         # 特殊处理 steamautocracks_v1（GitHub分支方式）
         if tool_type == "steamautocracks_v1":
             return await self.process_github_manifest(app_id, "SteamAutoCracks/ManifestHub", unlocker_type, use_st_auto_update, add_all_dlc, patch_depot_key)
-               # 特殊处理 sac-other：直连失败时自动走镜像
+       # 特殊处理 sac-other：直连失败时自动走镜像
         if tool_type == "sac-other":
             repo = "SteamAutoCracks/ManifestHub"
             direct_url = f"https://codeload.github.com/{repo}/zip/refs/heads/{app_id}"

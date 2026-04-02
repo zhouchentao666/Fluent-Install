@@ -236,6 +236,43 @@ TEXTS = {
         "already_latest": "已是最新版本",
         "already_latest_content": "当前已是最新版本，无需更新。",
         "check_update_failed": "检查更新失败",
+                "drm_page_title": "D加密授权器",
+        "drm_step1": "步骤 1：获取授权文件",
+        "drm_cw_file": "CW 文件",
+        "drm_cw_file_hint": "选择本地 .cw 授权文件并解密",
+        "drm_cw_placeholder": "选择 .cw 授权文件",
+        "drm_browse": "浏览",
+        "drm_decrypt": "解密",
+        "drm_auth_code": "授权码",
+        "drm_auth_code_hint": "通过授权码在线下载 CW 文件",
+        "drm_auth_code_placeholder": "输入授权码",
+        "drm_download_decrypt": "下载并解密",
+        "drm_online_auth": "在线获取授权",
+        "drm_online_auth_hint": "访问外部授权网站",
+        "drm_extract_title": "获取 CW 文件（本地提取）",
+        "drm_extract_hint": "需要已登录 Steam 且拥有该游戏",
+        "drm_extract_placeholder": "输入游戏 AppID（当前账号必须拥有该游戏）",
+        "drm_gen_authcode": "生成授权码",
+        "drm_extract_cw": "本地提取 CW",
+        "drm_info_title": "授权信息",
+        "drm_valid_from": "生效时间",
+        "drm_valid_to": "失效时间",
+        "drm_step2": "步骤 2：GL 模式授权（SteamTools）",
+        "drm_gl_hint": "将授权 ticket 写入 SteamTools 目录",
+        "drm_gl_btn": "开始授权 (GL/SteamTools)",
+        "drm_log": "日志",
+        "drm_nav": "D加密",
+        "drm_tip_select_cw": "请先选择 CW 文件",
+        "drm_tip_enter_code": "请输入授权码",
+        "drm_tip_decrypt_first": "请先解密 CW 文件",
+        "drm_tip_valid_appid": "请输入有效的 AppID",
+        "drm_missing_dep": "缺少依赖",
+        "drm_missing_dep_hint": "请安装 pycryptodome: pip install pycryptodome",
+        "drm_decrypt_failed": "解密失败",
+        "drm_download_failed": "下载失败",
+        "drm_auth_success": "授权成功",
+        "drm_auth_failed": "授权失败","restart_steam_title": "重启 Steam",
+        "restart_steam_confirm_message": "确定要重启 Steam 吗？\n\n这将关闭当前运行的 Steam 并重新启动。",
         
         # 缺失的翻译键
         "tip": "提示",
@@ -393,6 +430,43 @@ TEXTS = {
         "already_latest": "Already Up to Date",
         "already_latest_content": "You are running the latest version.",
         "check_update_failed": "Check Update Failed",
+                "drm_page_title": "D-Encryption Authorizer",
+        "drm_step1": "Step 1: Get Authorization File",
+        "drm_cw_file": "CW File",
+        "drm_cw_file_hint": "Select local .cw file and decrypt",
+        "drm_cw_placeholder": "Select .cw authorization file",
+        "drm_browse": "Browse",
+        "drm_decrypt": "Decrypt",
+        "drm_auth_code": "Auth Code",
+        "drm_auth_code_hint": "Download CW file online via auth code",
+        "drm_auth_code_placeholder": "Enter auth code",
+        "drm_download_decrypt": "Download & Decrypt",
+        "drm_online_auth": "Get Auth Online",
+        "drm_online_auth_hint": "Visit external authorization websites",
+        "drm_extract_title": "Get CW File (Local Extract)",
+        "drm_extract_hint": "Requires Steam login and game ownership",
+        "drm_extract_placeholder": "Enter game AppID (must own the game)",
+        "drm_gen_authcode": "Generate Auth Code",
+        "drm_extract_cw": "Extract CW Locally",
+        "drm_info_title": "Authorization Info",
+        "drm_valid_from": "Valid From",
+        "drm_valid_to": "Valid To",
+        "drm_step2": "Step 2: GL Mode Authorization (SteamTools)",
+        "drm_gl_hint": "Write authorization ticket to SteamTools directory",
+        "drm_gl_btn": "Authorize (GL/SteamTools)",
+        "drm_log": "Log",
+        "drm_nav": "D-Encryption",
+        "drm_tip_select_cw": "Please select a CW file first",
+        "drm_tip_enter_code": "Please enter auth code",
+        "drm_tip_decrypt_first": "Please decrypt CW file first",
+        "drm_tip_valid_appid": "Please enter a valid AppID",
+        "drm_missing_dep": "Missing Dependency",
+        "drm_missing_dep_hint": "Please install pycryptodome: pip install pycryptodome",
+        "drm_decrypt_failed": "Decrypt Failed",
+        "drm_download_failed": "Download Failed",
+        "drm_auth_success": "Authorization Successful",
+        "drm_auth_failed": "Authorization Failed","restart_steam_title": "Restart Steam",
+        "restart_steam_confirm_message": "Are you sure you want to restart Steam?\n\nThis will close the currently running Steam and restart it.",
         
         # 缺失的翻译键
         "tip": "Tip",
@@ -559,6 +633,42 @@ TEXTS = {
         "check_update_failed": "Échec de la vérification",
         "restart_steam_title": "Redémarrer Steam",
         "restart_steam_confirm_message": "Êtes-vous sûr de vouloir redémarrer Steam?\n\nCela fermera Steam en cours et le redémarrera.",
+        "drm_page_title": "Autorisation D-Chiffrement",
+        "drm_step1": "Étape 1: Obtenir le fichier d'autorisation",
+        "drm_cw_file": "Fichier CW",
+        "drm_cw_file_hint": "Sélectionner le fichier .cw local et déchiffrer",
+        "drm_cw_placeholder": "Sélectionner le fichier d'autorisation .cw",
+        "drm_browse": "Parcourir",
+        "drm_decrypt": "Déchiffrer",
+        "drm_auth_code": "Code d'autorisation",
+        "drm_auth_code_hint": "Télécharger le fichier CW en ligne via le code d'autorisation",
+        "drm_auth_code_placeholder": "Entrer le code d'autorisation",
+        "drm_download_decrypt": "Télécharger & Déchiffrer",
+        "drm_online_auth": "Obtenir l'autorisation en ligne",
+        "drm_online_auth_hint": "Visiter les sites d'autorisation externes",
+        "drm_extract_title": "Obtenir le fichier CW (Extraction locale)",
+        "drm_extract_hint": "Nécessite la connexion Steam et la possession du jeu",
+        "drm_extract_placeholder": "Entrer l'AppID du jeu (doit posséder le jeu)",
+        "drm_gen_authcode": "Générer le code d'autorisation",
+        "drm_extract_cw": "Extraire CW localement",
+        "drm_info_title": "Informations d'autorisation",
+        "drm_valid_from": "Valide à partir de",
+        "drm_valid_to": "Valide jusqu'à",
+        "drm_step2": "Étape 2: Autorisation mode GL (SteamTools)",
+        "drm_gl_hint": "Écrire le ticket d'autorisation dans le répertoire SteamTools",
+        "drm_gl_btn": "Autoriser (GL/SteamTools)",
+        "drm_log": "Journal",
+        "drm_nav": "D-Chiffrement",
+        "drm_tip_select_cw": "Veuillez d'abord sélectionner un fichier CW",
+        "drm_tip_enter_code": "Veuillez entrer un code d'autorisation",
+        "drm_tip_decrypt_first": "Veuillez d'abord déchiffrer le fichier CW",
+        "drm_tip_valid_appid": "Veuillez entrer un AppID valide",
+        "drm_missing_dep": "Dépendance manquante",
+        "drm_missing_dep_hint": "Veuillez installer pycryptodome: pip install pycryptodome",
+        "drm_decrypt_failed": "Échec du déchiffrement",
+        "drm_download_failed": "Échec du téléchargement",
+        "drm_auth_success": "Autorisation réussie",
+        "drm_auth_failed": "Autorisation échouée",
         "tip": "Astuce",
         "recognition_success": "Reconnaissance réussie",
         "game_not_found": "Jeu non trouvé",
@@ -724,6 +834,42 @@ TEXTS = {
         "check_update_failed": "Ошибка проверки",
         "restart_steam_title": "Перезапустить Steam",
         "restart_steam_confirm_message": "Вы уверены, что хотите перезапустить Steam?\n\nЭто закроет текущий Steam и перезапустит его.",
+        "drm_page_title": "Авторизатор D-Шифрования",
+        "drm_step1": "Шаг 1: Получить файл авторизации",
+        "drm_cw_file": "CW файл",
+        "drm_cw_file_hint": "Выберите локальный .cw файл и расшифруйте",
+        "drm_cw_placeholder": "Выберите файл авторизации .cw",
+        "drm_browse": "Обзор",
+        "drm_decrypt": "Расшифровать",
+        "drm_auth_code": "Код авторизации",
+        "drm_auth_code_hint": "Скачать CW файл онлайн через код авторизации",
+        "drm_auth_code_placeholder": "Введите код авторизации",
+        "drm_download_decrypt": "Скачать & Расшифровать",
+        "drm_online_auth": "Получить авторизацию онлайн",
+        "drm_online_auth_hint": "Посетить внешние сайты авторизации",
+        "drm_extract_title": "Получить CW файл (Локальное извлечение)",
+        "drm_extract_hint": "Требуется вход в Steam и владение игрой",
+        "drm_extract_placeholder": "Введите AppID игры (должен владеть игрой)",
+        "drm_gen_authcode": "Сгенерировать код авторизации",
+        "drm_extract_cw": "Локально извлечь CW",
+        "drm_info_title": "Информация авторизации",
+        "drm_valid_from": "Действительно с",
+        "drm_valid_to": "Действительно до",
+        "drm_step2": "Шаг 2: Авторизация режима GL (SteamTools)",
+        "drm_gl_hint": "Записать билет авторизации в каталог SteamTools",
+        "drm_gl_btn": "Авторизовать (GL/SteamTools)",
+        "drm_log": "Журнал",
+        "drm_nav": "D-Шифрование",
+        "drm_tip_select_cw": "Пожалуйста, сначала выберите CW файл",
+        "drm_tip_enter_code": "Пожалуйста, введите код авторизации",
+        "drm_tip_decrypt_first": "Пожалуйста, сначала расшифруйте CW файл",
+        "drm_tip_valid_appid": "Пожалуйста, введите действительный AppID",
+        "drm_missing_dep": "Отсутствует зависимость",
+        "drm_missing_dep_hint": "Пожалуйста, установите pycryptodome: pip install pycryptodome",
+        "drm_decrypt_failed": "Ошибка расшифровки",
+        "drm_download_failed": "Ошибка загрузки",
+        "drm_auth_success": "Авторизация успешна",
+        "drm_auth_failed": "Авторизация не удалась",
         "tip": "Совет",
         "recognition_success": "Успешное распознавание",
         "game_not_found": "Игра не найдена",
@@ -889,6 +1035,42 @@ TEXTS = {
         "check_update_failed": "Prüfung fehlgeschlagen",
         "restart_steam_title": "Steam neu starten",
         "restart_steam_confirm_message": "Sind Sie sicher, dass Sie Steam neu starten möchten?\n\nDies wird das aktuelle Steam schließen und neu starten.",
+        "drm_page_title": "D-Verschlüsselung Autorisierung",
+        "drm_step1": "Schritt 1: Autorisierungsdatei erhalten",
+        "drm_cw_file": "CW-Datei",
+        "drm_cw_file_hint": "Lokale .cw-Datei auswählen und entschlüsseln",
+        "drm_cw_placeholder": "CW-Autorisierungsdatei auswählen",
+        "drm_browse": "Durchsuchen",
+        "drm_decrypt": "Entschlüsseln",
+        "drm_auth_code": "Autorisierungscode",
+        "drm_auth_code_hint": "CW-Datei online über Autorisierungscode herunterladen",
+        "drm_auth_code_placeholder": "Autorisierungscode eingeben",
+        "drm_download_decrypt": "Herunterladen & Entschlüsseln",
+        "drm_online_auth": "Online-Autorisierung erhalten",
+        "drm_online_auth_hint": "Externe Autorisierungs-Websites besuchen",
+        "drm_extract_title": "CW-Datei erhalten (Lokale Extraktion)",
+        "drm_extract_hint": "Benötigt Steam-Anmeldung und Spielbesitz",
+        "drm_extract_placeholder": "Spiel-AppID eingeben (muss das Spiel besitzen)",
+        "drm_gen_authcode": "Autorisierungscode generieren",
+        "drm_extract_cw": "CW lokal extrahieren",
+        "drm_info_title": "Autorisierungsinformationen",
+        "drm_valid_from": "Gültig ab",
+        "drm_valid_to": "Gültig bis",
+        "drm_step2": "Schritt 2: GL-Modus-Autorisierung (SteamTools)",
+        "drm_gl_hint": "Autorisierungsticket in SteamTools-Verzeichnis schreiben",
+        "drm_gl_btn": "Autorisieren (GL/SteamTools)",
+        "drm_log": "Protokoll",
+        "drm_nav": "D-Verschlüsselung",
+        "drm_tip_select_cw": "Bitte wählen Sie zuerst eine CW-Datei aus",
+        "drm_tip_enter_code": "Bitte geben Sie einen Autorisierungscode ein",
+        "drm_tip_decrypt_first": "Bitte entschlüsseln Sie zuerst die CW-Datei",
+        "drm_tip_valid_appid": "Bitte geben Sie eine gültige AppID ein",
+        "drm_missing_dep": "Abhängigkeit fehlt",
+        "drm_missing_dep_hint": "Bitte installieren Sie pycryptodome: pip install pycryptodome",
+        "drm_decrypt_failed": "Entschlüsselung fehlgeschlagen",
+        "drm_download_failed": "Download fehlgeschlagen",
+        "drm_auth_success": "Autorisierung erfolgreich",
+        "drm_auth_failed": "Autorisierung fehlgeschlagen",
         "tip": "Tipp",
         "recognition_success": "Erkennung erfolgreich",
         "game_not_found": "Spiel nicht gefunden",
@@ -967,6 +1149,42 @@ TEXTS = {
         "add_options": "追加オプション",
         "add_all_dlc": "すべてのDLCを追加",
         "patch_manifest": "マニフェストをパッチ",
+        "drm_page_title": "D暗号化認証ツール",
+        "drm_step1": "ステップ1: 認証ファイルを取得",
+        "drm_cw_file": "CWファイル",
+        "drm_cw_file_hint": "ローカルの.cwファイルを選択して復号",
+        "drm_cw_placeholder": "CW認証ファイルを選択",
+        "drm_browse": "参照",
+        "drm_decrypt": "復号",
+        "drm_auth_code": "認証コード",
+        "drm_auth_code_hint": "認証コードでオンラインからCWファイルをダウンロード",
+        "drm_auth_code_placeholder": "認証コードを入力",
+        "drm_download_decrypt": "ダウンロード＆復号",
+        "drm_online_auth": "オンライン認証を取得",
+        "drm_online_auth_hint": "外部認証サイトを訪問",
+        "drm_extract_title": "CWファイルを取得（ローカル抽出）",
+        "drm_extract_hint": "Steamログインとゲーム所有権が必要",
+        "drm_extract_placeholder": "ゲームAppIDを入力（ゲームを所有している必要があります）",
+        "drm_gen_authcode": "認証コードを生成",
+        "drm_extract_cw": "CWをローカル抽出",
+        "drm_info_title": "認証情報",
+        "drm_valid_from": "有効開始日",
+        "drm_valid_to": "有効期限",
+        "drm_step2": "ステップ2: GLモード認証（SteamTools）",
+        "drm_gl_hint": "認証チケットをSteamToolsディレクトリに書き込み",
+        "drm_gl_btn": "認証（GL/SteamTools）",
+        "drm_log": "ログ",
+        "drm_nav": "D暗号化",
+        "drm_tip_select_cw": "まずCWファイルを選択してください",
+        "drm_tip_enter_code": "認証コードを入力してください",
+        "drm_tip_decrypt_first": "まずCWファイルを復号してください",
+        "drm_tip_valid_appid": "有効なAppIDを入力してください",
+        "drm_missing_dep": "依存関係がありません",
+        "drm_missing_dep_hint": "pycryptodomeをインストールしてください: pip install pycryptodome",
+        "drm_decrypt_failed": "復号失敗",
+        "drm_download_failed": "ダウンロード失敗",
+        "drm_auth_success": "認証成功",
+        "drm_auth_failed": "認証失敗",
         "patch_depot_key": "デポットキーをパッチ",
         "manifest_source": "マニフェストソース:",
         "add_game": "ゲームを追加",
@@ -3057,7 +3275,7 @@ class SearchPage(ScrollArea):
             "SteamAutoCracks V2",
             "SteamAutoCracks V1",
             tr("sac-other"),
-            "Cysaw",
+            "GMRC",
             "Walftech",
             "Sudama",
             "清单不求人",
@@ -3317,12 +3535,12 @@ class SearchPage(ScrollArea):
                 1: "steamautocracks_v2",
                 2: "steamautocracks_v1",
                 3: "sac-other",
-                4: "cysaw",
-                5: "walftech",
-                6: "sudama",
-                7: "buqiuren",
-                8: "MHub",
-                9: "github_auiowu",
+                5: "gmrc",
+                6: "walftech",
+                7: "sudama",
+                8: "buqiuren",
+                9: "MHub",
+                10: "github_auiowu",
             }
             config["default_manifest_source"] = source_mapping.get(self.manifest_source_combo.currentIndex(), "auto")
             
@@ -3371,12 +3589,12 @@ class SearchPage(ScrollArea):
                     "steamautocracks_v2": 1,
                     "steamautocracks_v1": 2,
                     "sac-other": 3,
-                    "cysaw": 4,
-                    "walftech": 5,
-                    "sudama": 6,
-                    "buqiuren": 7,
-                    "MHub": 8,
-                    "github_auiowu": 9,
+                    "gmrc": 5,
+                    "walftech": 6,
+                    "sudama": 7,
+                    "buqiuren": 8,
+                    "MHub": 9,
+                    "github_auiowu": 10,
                 }
                 
                 index = source_mapping.get(saved_source, 0)
@@ -3642,6 +3860,37 @@ class SearchPage(ScrollArea):
         for card in self.result_cards:
             card.deleteLater()
         self.result_cards.clear()
+        
+        # 检查是否是纯数字（AppID）
+        if query.isdigit():
+            # 直接处理 AppID
+            self.search_worker = AsyncWorker(self._search_appid(query))
+            self.search_worker.result_ready.connect(self.on_search_complete)
+            self.search_worker.error.connect(self.on_search_error)
+            self.search_worker.start()
+        else:
+            # 搜索游戏名称
+            self.search_worker = AsyncWorker(self._search_games(query))
+            self.search_worker.result_ready.connect(self.on_search_complete)
+            self.search_worker.error.connect(self.on_search_error)
+            self.search_worker.start()
+    
+    async def _search_appid(self, appid: str):
+        """搜索 AppID"""
+        return {'type': 'appid', 'appid': appid}
+    
+    async def _search_games(self, query: str):
+        """搜索游戏名称"""
+        # 创建后端实例（与其他页面保持一致）
+        async with CaiBackend() as backend:
+            await backend.initialize()
+            
+            # 获取当前语言设置（使用全局变量）
+            lang = get_steam_lang(current_language)
+            
+            # 调用后端搜索功能
+            results = await backend.find_appid_by_name(query, lang)
+            return {'type': 'games', 'results': results}
     
     def notify_theme_changed(self):
         """通知所有搜索结果卡片主题已变化"""
@@ -3861,12 +4110,12 @@ class SearchPage(ScrollArea):
             1: "steamautocracks_v2",
             2: "steamautocracks_v1",
             3: "sac-other",
-            4: "cysaw",
-            5: "walftech",
-            6: "sudama",
-            7: "buqiuren",
-            8: "MHub",
-            9: "github_auiowu",
+            5: "gmrc",
+            6: "walftech",
+            7: "sudama",
+            8: "buqiuren",
+            9: "MHub",
+            10: "github_auiowu",
         }
         tool_type = index_to_source.get(self.manifest_source_combo.currentIndex(), "auto")
         
@@ -3899,7 +4148,7 @@ class SearchPage(ScrollArea):
                         "steamautocracks_v2",
                         "steamautocracks_v1",
                         "sac-other",
-                        "cysaw",
+                        "gmrc",
                         "walftech",
                         "sudama",
                         "buqiuren",
@@ -3929,7 +4178,7 @@ class SearchPage(ScrollArea):
                 github_repo_map = {
                     "github_auiowu": "Auiowu/ManifestAutoUpdate",
                 }
-                zip_sources = ["cysaw", "sac-other", "walftech", "steamautocracks_v2", "steamautocracks_v1", "sudama", "buqiuren", "MHub"]
+                zip_sources = [ "gmrc", "sac-other", "walftech", "steamautocracks_v2", "steamautocracks_v1", "sudama", "buqiuren", "MHub"]
                 if tool_type_actual in zip_sources:
                     success = await backend.process_zip_source(
                         appid, tool_type_actual, unlocker_type,
@@ -5787,7 +6036,6 @@ class MainWindow(MSFluentWindow):
             FluentIcon.GAME,
             tr("launcher")
         )
-
         
         # 添加FAQ页面
         self.addSubInterface(
@@ -5961,6 +6209,7 @@ class MainWindow(MSFluentWindow):
             self.home_page,
             self.search_page, 
             self.launcher_page,
+            self.drm_page,
             self.settings_page,
             self.faq_page
         ]
