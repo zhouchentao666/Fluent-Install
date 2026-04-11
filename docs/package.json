@@ -1,0 +1,14 @@
+{
+  "name": "fluent-install-docs",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Fluent Install documentation site",
+  "scripts": {
+    "docs:dev": "vitepress dev",
+    "docs:build": "vitepress build",
+    "docs:preview": "vitepress preview"
+  },
+  "devDependencies": {
+    "vitepress": "^1.6.3"
+  }
+}
