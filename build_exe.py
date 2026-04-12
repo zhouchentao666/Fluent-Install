@@ -17,16 +17,16 @@ def build_exe():
     
     # PyInstaller 参数
     args = [
-        'fluent_app.py',  # 主程序文件
+        'main.py',  # 主程序文件
         '--name=FluentInstall',  # 生成的 exe 名称
         '--onefile',  # 打包成单个文件
         '--windowed',  # 无控制台窗口（GUI程序）
         '--icon=assets/icon.ico',  # 图标文件（如果存在）
         '--add-data=config;config',  # 添加 config 目录
         '--add-data=assets;assets',  # 添加 assets 目录（如果存在）
-        '--add-data=GBE_Patch;GBE_Patch',  # 添加 GBE_Patch 目录 (D加密GBE模式需要)
-        '--add-data=GreenLuma_2026_1.7.4-Steam006;GreenLuma',  # 添加 GreenLuma 目录 (D加密GreenLuma模式需要)
-        '--hidden-import=cai_backend',  # 显式导入 cai_backend 模块
+        '--add-data=backend/GBE_Patch;GBE_Patch',  # 添加 GBE_Patch 目录 (D加密GBE模式需要)
+        '--add-data=backend/GreenLuma_2026_1.7.4-Steam006;GreenLuma',  # 添加 GreenLuma 目录 (D加密GreenLuma模式需要)
+        '--hidden-import=backend.cai_backend',  # 显式导入 cai_backend 模块
         '--hidden-import=backend.authorizer_backend',  # 显式导入 backend 授权模块
         '--hidden-import=backend.cw_extractor_core',  # 显式导入 backend CW提取模块
         '--hidden-import=backend.trainer_backend',  # 显式导入 backend 修改器模块
@@ -72,16 +72,16 @@ def build_exe():
         print(f"警告: backend 目录 {backend_dir} 不存在")
     
     # 检查 GBE_Patch 目录是否存在
-    gbe_dir = current_dir / 'GBE_Patch'
+    gbe_dir = current_dir / 'backend' / 'GBE_Patch'
     if not gbe_dir.exists():
         print(f"警告: GBE_Patch 目录 {gbe_dir} 不存在")
-        args = [arg for arg in args if not arg.startswith('--add-data=GBE_Patch')]
+        args = [arg for arg in args if not arg.startswith('--add-data=backend/GBE_Patch')]
 
     # 检查 GreenLuma 目录是否存在
-    greenluma_dir = current_dir / 'GreenLuma_2026_1.7.4-Steam006'
+    greenluma_dir = current_dir / 'backend' / 'GreenLuma_2026_1.7.4-Steam006'
     if not greenluma_dir.exists():
         print(f"警告: GreenLuma 目录 {greenluma_dir} 不存在")
-        args = [arg for arg in args if not arg.startswith('--add-data=GreenLuma')]
+        args = [arg for arg in args if not arg.startswith('--add-data=backend/GreenLuma')]
 
     # 检查 backup 目录是否存在
     backup_dir = current_dir / 'backup'

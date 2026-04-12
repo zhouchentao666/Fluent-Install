@@ -33,7 +33,7 @@ if errorlevel 1 (
 echo [INFO] Starting Fluent Design version...
 echo.
 
-python fluent_app.py
+python main.py
 
 if errorlevel 1 (
     echo.
