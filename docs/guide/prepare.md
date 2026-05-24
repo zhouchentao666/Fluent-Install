@@ -2,7 +2,8 @@
 
 ## 方式1：OpenSteamTool（推荐）
 
-1.进入https://github.com/OpenSteam001/OpenSteamTool/，下载最新发行版本体
+1.进入https://github.com/OpenSteam001/OpenSteamTool/
+下载最新发行版本体
 2.将其中所有文件解压放到steam目录
 3.在steam目录额外放置一个opensteamtool.toml
 其中内容为
