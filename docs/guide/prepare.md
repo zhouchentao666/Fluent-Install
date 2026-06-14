@@ -2,6 +2,12 @@
 
 ## 方式1：OpenSteamTool（推荐）
 
+如已安装steamtools，请卸载！
+
+steamtools切换到opensteamtool的视频教程：
+
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=116543333598836&bvid=BV1eDRQBrEvT&cid=38207950656&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+
 1.进入https://github.com/OpenSteam001/OpenSteamTool/
 下载最新发行版本体
 
